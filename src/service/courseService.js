@@ -5,6 +5,10 @@ const createCourse = async (courseData) => {
   return await newCourse.save();
 };
 
+const getAllCourses = async (skip = 0, limit = 10) => {
+  const courses = await Course.find().skip(skip).limit(limit);
+  return courses;
+};
 const getCourseById = async (courseId) => {
   return await Course.findOne({ courseId });
 };
@@ -33,6 +37,7 @@ export {
   createCourse,
   getCourseById,
   getCourseByTitle,
+  getAllCourses,
   getCoursesByInstructor,
   deleteCourse,
   updateCourse,

@@ -5,6 +5,7 @@ import {
   getCourseById,
   getCourseByTitle,
   getCoursesByInstructor,
+  getAllCourses,
 } from "../service/courseService.js";
 
 const createCourseController = async (req, res) => {
@@ -43,6 +44,34 @@ const getCourseByIdController = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Failed to retrieve course",
+      error: err.message,
+    });
+  }
+};
+
+const getAllCoursesController = async (req, res) => {
+  try {
+    // Optional pagination from query parameters
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const courses = await getAllCourses(skip, limit);
+    
+    res.status(200).json({
+      success: true,
+      message: "Courses retrieved successfully",
+      courses,
+      pagination: {
+        page,
+        limit,
+        // total count can be added if service returns it
+      },
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to retrieve courses",
       error: err.message,
     });
   }
@@ -148,6 +177,7 @@ export {
   createCourseController,
   getCourseByIdController,
   getCourseByTitleController,
+  getAllCoursesController,
   getCoursesByInstructorController,
   deleteCourseController,
   updateCourseController,

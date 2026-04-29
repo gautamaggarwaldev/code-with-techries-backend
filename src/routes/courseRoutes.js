@@ -2,6 +2,7 @@ import express from "express";
 import {
   createCourseController,
   deleteCourseController,
+  getAllCoursesController,
   getCourseByIdController,
   getCourseByTitleController,
   getCoursesByInstructorController,
@@ -12,6 +13,7 @@ import { protectTeacherOrAdmin } from "../middleware/authMiddleware.js";
 const router = express.Router();
 
 router.post("/create", protectTeacherOrAdmin, createCourseController);
+router.get("/all", getAllCoursesController);
 router.get("/:courseId", getCourseByIdController);
 router.get("/title/:title", getCourseByTitleController);
 router.get("/instructor/:instructorName", getCoursesByInstructorController);
